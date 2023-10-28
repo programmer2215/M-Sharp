@@ -1,0 +1,16 @@
+{
+  "name": "m-sharp-research",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gen-parser": "nearleyc m-sharp.grammar -o m-sharp.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nearly": "^1.8.1",
+    "prompt-sync": "^4.2.0"
+  }
+}
