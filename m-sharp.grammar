@@ -1,9 +1,13 @@
 
 program -> 
-    var_assignment   {% id %}
-    | number         {% id %}
+    var_assignment    {% id %}
+    | number          {% id %}
+    | print_statement {% id %}
 
-var_assignment -> identifier " ":* "->" " ":* number
+
+
+
+var_assignment -> identifier _ "->" _ (number | identifier)
 
 {% 
     data => {
@@ -16,7 +20,52 @@ var_assignment -> identifier " ":* "->" " ":* number
 %}
 
 
+
+
+print_statement -> "show" __ expression 
+{%
+    data => {
+        return {
+            type : "print_statement",
+            expression : data[2]
+        }
+    }
+%}
+
+
+expression
+    -> unary_expression {% id %}
+    | binary_expression {% id %}
+
+unary_expression
+    -> number           {% id %}
+    | identifier        {% id %}
+
+binary_expression
+    -> unary_expression _ operator _ unary_expression
+
+    {% 
+        data => {
+            return {
+                type : "binary_expression",
+                left : data[0],
+                operator : data[2],
+                right : data[4]
+            }
+        }
+     %}
+
+operator
+    -> "+"    {% id %}
+    | "-"     {% id %}
+    | "*"     {% id %}
+    | "/"     {% id %}
+
 identifier -> [a-zA-z]:+ {% id %}
+
+
+
+
 
 number -> 
     digits "." digits {%
@@ -26,6 +75,15 @@ number ->
         data => Number(data)
      %}
 
+
+
+
+
 digits -> [0-9]:+ {% 
     data => data[0].join("")
 %}
+
+
+
+_ -> [ ]:*
+__ -> [ ]:+
